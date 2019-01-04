@@ -2,6 +2,12 @@
 
 totalItems = []
 
+try:
+	txtList = open("schedule.txt", "a")
+except IOError:
+	print("There is a problem")
+
+
 def start_Message():
 	print("What would you like to do today")
 	print("1. View current list")
@@ -28,6 +34,7 @@ def choice_Decision(x):
 def newItem():
 	tempItem = input("What would you like to add: ")
 	totalItems.append(tempItem)
+	txtList.write("\n"+str(tempItem))
 	return;
 
 # TODO: fix numering system from (0,1,...) to (1,2,...)

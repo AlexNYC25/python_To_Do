@@ -1,11 +1,16 @@
 # currently todo list is only as a simple list that is not saved, possibly use txt or sqlite
+# fix txt list open and close
+
 
 totalItems = []
 
+# to be removed
+'''
 try:
 	txtList = open("schedule.txt", "a")
 except IOError:
 	print("There is a problem")
+'''
 
 
 def start_Message():
@@ -33,22 +38,45 @@ def choice_Decision(x):
 
 def newItem():
 	tempItem = input("What would you like to add: ")
-	totalItems.append(tempItem)
-	txtList.write("\n"+str(tempItem))
+	# totalItems.append(tempItem)
+	# old code to be deleted
+	#txtList.write("\n"+str(tempItem))
+
+	with open("schedule.txt", "a") as txtList:
+		print(tempItem, file=txtList)
+		#txtList.write("\n"+str(tempItem))
+
 	return;
 
 # TODO: fix numering system from (0,1,...) to (1,2,...)
 def printAll():
 	divSec()
-	for x in range(len(totalItems)):
+
+	with open("schedule.txt", "r") as txtList:
+		count = 0
+		for line in txtList:
+			count += 1
+			print(str(count) + ": " + line)
+		
+
+
+	# old iterator for local list
+	'''
+	for x in range(len(toalItems)):
 		print(str(x)+". ", end='')
 		print(totalItems[int(x)])
+	'''
 	divSec()
 
 # TODO: fix numering system from (0,1,...) to (1,2,...)
 def deleteItem():
 	toBeDeleted = input("What item number would you like to delete: ")
-	del totalItems[int(toBeDeleted)]
+
+	count = 0
+	with open("schedule.txt","w") as f:
+		f_txt = f.readlines()
+		del f_txt[toBeDeleted-1]
+
 	return;
 
 # divider for start and end of list of items

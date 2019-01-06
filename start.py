@@ -19,12 +19,26 @@ def start_Message():
 	print("2. Add new item")
 	print("3. Delete item")
 	print("4. End program")
+
 	choice = input()
+	
+
+	# error catching to enusre an int value is passed
+	try:
+		print(int(choice))
+	except ValueError:
+		print("not valid")
+		start_Message()
+		return;
+
 	choice_Decision(choice)
 	return;
 
 # set codntion for if number is not one of the options specified
 def choice_Decision(x):
+	if(int(x) > 4):
+		print("\nnope try again\n")
+
 	if (int(x) == 1):
 		printAll()
 	if (int(x) == 2):
@@ -33,7 +47,8 @@ def choice_Decision(x):
 		deleteItem()
 	if (int(x) == 4):
 		return;
-	start_Message()
+	else:
+		start_Message()
 	return;
 
 def newItem():
@@ -55,8 +70,9 @@ def printAll():
 	with open("schedule.txt", "r") as txtList:
 		count = 0
 		for line in txtList:
-			count += 1
-			print(str(count) + ": " + line)
+			if not line.isspace():
+				count += 1
+				print(str(count) + ": " + line)
 		
 
 
@@ -69,13 +85,34 @@ def printAll():
 	divSec()
 
 # TODO: fix numering system from (0,1,...) to (1,2,...)
+# ISSSUE: having problems deleting item from txt line
 def deleteItem():
 	toBeDeleted = input("What item number would you like to delete: ")
 
-	count = 0
-	with open("schedule.txt","w") as f:
+	with open("schedule.txt","r") as f:
+		# get list of items in txt file 
 		f_txt = f.readlines()
-		del f_txt[toBeDeleted-1]
+
+		with open("schedule.txt", "w") as current:
+			print("", file=current)
+
+		del f_txt[int(toBeDeleted)]
+
+		# currently works in editing a list of items, and deleting a specific value
+		# next is to add items one at a time 
+		# print(f_txt)
+
+		# loads all values back in. except for 0, since it is ""
+		with open("schedule.txt", "a") as newFILE:
+			for l in range(1, len(f_txt)):
+				print(f_txt[l], file = newFILE)
+
+	'''
+	currently this code shows that the entire txt file in empty
+	with open("schedule.txt", "r") as toBeRead:
+			for line in toBeRead:
+				print(line)	
+	'''
 
 	return;
 
